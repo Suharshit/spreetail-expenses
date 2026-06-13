@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  passwordHash  String
+  createdAt     DateTime @default(now())
+
+  // Relations
+  groupsCreated      Group[]            @relation("GroupCreator")
+  memberships        GroupMembership[]
+  expensesPaid       Expense[]          @relation("ExpensePaidBy")
+  expenseSplits      ExpenseSplit[]
+  settlementsPaid    Settlement[]       @relation("SettlementPaidBy")
+  settlementsReceived Settlement[]      @relation("SettlementPaidTo")
+  importSessions     ImportSession[]
+  anomalyApprovals   ImportAnomaly[]    @relation("AnomalyApprovedBy")
+}
+
+model Group {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  createdBy   String
+  createdAt   DateTime @default(now())
+
+  // Relations
+  creator     User              @relation("GroupCreator", fields: [createdBy], references: [id])
+  memberships GroupMembership[]
+  expenses    Expense[]
+  settlements Settlement[]
+  importSessions ImportSession[]
+}
+
+model GroupMembership {
+  id       String    @id @default(uuid())
+  groupId  String
+  userId   String
+  joinedAt DateTime
+  leftAt   DateTime?
+
+  // Relations
+  group Group @relation(fields: [groupId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@unique([groupId, userId])
+}
+
+model Expense {
+  id               String   @id @default(uuid())
+  groupId          String
+  description      String
+  paidByUserId     String?
+  amount           Decimal  @db.Decimal(10, 2)
+  currency         String   @default("INR")
+  amountInr        Decimal  @db.Decimal(10, 2)
+  exchangeRate     Decimal  @default(1.0) @db.Decimal(10, 4)
+  splitType        String
+  expenseDate      DateTime
+  isSettlement     Boolean  @default(false)
+  importRowNumber  Int?
+  notes            String?
+  createdAt        DateTime @default(now())
+
+  // Relations
+  group       Group          @relation(fields: [groupId], references: [id])
+  paidBy      User?          @relation("ExpensePaidBy", fields: [paidByUserId], references: [id])
+  splits      ExpenseSplit[]
+}
+
+model ExpenseSplit {
+  id          String  @id @default(uuid())
+  expenseId   String
+  userId      String
+  amountOwed  Decimal @db.Decimal(10, 2)
+  splitRatio  Decimal? @db.Decimal(10, 4)
+  percentage  Decimal? @db.Decimal(5, 2)
+
+  // Relations
+  expense Expense @relation(fields: [expenseId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+}
+
+model Settlement {
+  id             String   @id @default(uuid())
+  groupId        String
+  paidByUserId   String
+  paidToUserId   String
+  amount         Decimal  @db.Decimal(10, 2)
+  currency       String   @default("INR")
+  settlementDate DateTime
+  notes          String?
+  createdAt      DateTime @default(now())
+
+  // Relations
+  group   Group @relation(fields: [groupId], references: [id])
+  paidBy  User  @relation("SettlementPaidBy", fields: [paidByUserId], references: [id])
+  paidTo  User  @relation("SettlementPaidTo", fields: [paidToUserId], references: [id])
+}
+
+model ImportSession {
+  id            String   @id @default(uuid())
+  groupId       String
+  importedBy    String
+  filename      String
+  totalRows     Int      @default(0)
+  rowsImported  Int      @default(0)
+  rowsSkipped   Int      @default(0)
+  rowsFlagged   Int      @default(0)
+  status        String   @default("pending")
+  createdAt     DateTime @default(now())
+
+  // Relations
+  group     Group           @relation(fields: [groupId], references: [id])
+  importer  User            @relation(fields: [importedBy], references: [id])
+  anomalies ImportAnomaly[]
+}
+
+model ImportAnomaly {
+  id               String    @id @default(uuid())
+  sessionId        String
+  rowNumber        Int
+  anomalyType      String
+  rawRowData       String
+  description      String
+  actionTaken      String
+  resolutionNotes  String?
+  requiresApproval Boolean   @default(false)
+  approvedBy       String?
+  approvedAt       DateTime?
+  createdAt        DateTime  @default(now())
+
+  // Relations
+  session    ImportSession @relation(fields: [sessionId], references: [id])
+  approver   User?         @relation("AnomalyApprovedBy", fields: [approvedBy], references: [id])
+}
