@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(uuid())
+  id            String   @id @default(uuid(4))
   name          String
   email         String   @unique
   passwordHash  String
@@ -27,7 +27,7 @@ model User {
 }
 
 model Group {
-  id          String   @id @default(uuid())
+  id          String   @id @default(uuid(4))
   name        String
   description String?
   createdBy   String
@@ -42,7 +42,7 @@ model Group {
 }
 
 model GroupMembership {
-  id       String    @id @default(uuid())
+  id       String    @id @default(uuid(4))
   groupId  String
   userId   String
   joinedAt DateTime
@@ -56,7 +56,7 @@ model GroupMembership {
 }
 
 model Expense {
-  id               String   @id @default(uuid())
+  id               String   @id @default(uuid(4))
   groupId          String
   description      String
   paidByUserId     String?
@@ -78,7 +78,7 @@ model Expense {
 }
 
 model ExpenseSplit {
-  id          String  @id @default(uuid())
+  id          String  @id @default(uuid(4))
   expenseId   String
   userId      String
   amountOwed  Decimal @db.Decimal(10, 2)
@@ -91,7 +91,7 @@ model ExpenseSplit {
 }
 
 model Settlement {
-  id             String   @id @default(uuid())
+  id             String   @id @default(uuid(4))
   groupId        String
   paidByUserId   String
   paidToUserId   String
@@ -108,7 +108,7 @@ model Settlement {
 }
 
 model ImportSession {
-  id            String   @id @default(uuid())
+  id            String   @id @default(uuid(4))
   groupId       String
   importedBy    String
   filename      String
@@ -126,7 +126,7 @@ model ImportSession {
 }
 
 model ImportAnomaly {
-  id               String    @id @default(uuid())
+  id               String    @id @default(uuid(4))
   sessionId        String
   rowNumber        Int
   anomalyType      String
