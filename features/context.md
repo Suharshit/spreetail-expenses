@@ -20,6 +20,19 @@ Spreetail Expenses is a full-stack shared expense splitting web application (sim
 - [x] `app/(dashboard)/dashboard/page.tsx` - Dashboard landing page displaying welcome message.
 - [x] `components/layout/SignOutButton.tsx` - Interactive client component that calls `signOut` to NextAuth.
 
+### Groups Module (`features/groups_module_02.md`)
+- [ ] `app/api/groups/route.ts` - GET list + POST create
+- [ ] `app/api/groups/[groupId]/route.ts` - GET single + PATCH + DELETE
+- [ ] `app/api/groups/[groupId]/members/route.ts` - GET + POST add + PATCH remove
+- [ ] `app/api/users/route.ts` - GET all users (for dropdown)
+- [ ] `app/(dashboard)/groups/page.tsx` - Groups list page
+- [ ] `app/(dashboard)/groups/[groupId]/page.tsx` - Group detail page
+- [ ] `components/groups/GroupCard.tsx` - Group card component
+- [ ] `components/groups/MembersTable.tsx` - Reusable members table
+- [ ] `components/groups/GroupForm.tsx` - Create/edit group form
+- [ ] `components/groups/AddMemberModal.tsx` - Add member modal
+- [ ] `components/groups/RemoveMemberModal.tsx` - Remove member modal
+
 ### Outstanding Tasks / Next Steps
 - Verify application flows on runtime (Login, Registration, Redirects).
 - Wait for upcoming modules (e.g., Groups, Expenses) to populate the main dashboard content.
