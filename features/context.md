@@ -21,18 +21,33 @@ Spreetail Expenses is a full-stack shared expense splitting web application (sim
 - [x] `components/layout/SignOutButton.tsx` - Interactive client component that calls `signOut` to NextAuth.
 
 ### Groups Module (`features/groups_module_02.md`)
-- [ ] `app/api/groups/route.ts` - GET list + POST create
-- [ ] `app/api/groups/[groupId]/route.ts` - GET single + PATCH + DELETE
-- [ ] `app/api/groups/[groupId]/members/route.ts` - GET + POST add + PATCH remove
-- [ ] `app/api/users/route.ts` - GET all users (for dropdown)
-- [ ] `app/(dashboard)/groups/page.tsx` - Groups list page
-- [ ] `app/(dashboard)/groups/[groupId]/page.tsx` - Group detail page
-- [ ] `components/groups/GroupCard.tsx` - Group card component
-- [ ] `components/groups/MembersTable.tsx` - Reusable members table
-- [ ] `components/groups/GroupForm.tsx` - Create/edit group form
-- [ ] `components/groups/AddMemberModal.tsx` - Add member modal
-- [ ] `components/groups/RemoveMemberModal.tsx` - Remove member modal
+- [x] `app/api/groups/route.ts` - GET list + POST create
+- [x] `app/api/groups/[groupId]/route.ts` - GET single + PATCH + DELETE
+- [x] `app/api/groups/[groupId]/members/route.ts` - GET + POST add + PATCH remove
+- [x] `app/api/users/route.ts` - GET all users (for dropdown)
+- [x] `app/(dashboard)/groups/page.tsx` - Groups list page
+- [x] `app/(dashboard)/groups/[groupId]/page.tsx` - Group detail page
+- [x] `components/groups/GroupCard.tsx` - Group card component
+- [x] `components/groups/MembersTable.tsx` - Reusable members table
+- [x] `components/groups/GroupForm.tsx` - Create/edit group form
+- [x] `components/groups/AddMemberModal.tsx` - Add member modal
+- [x] `components/groups/RemoveMemberModal.tsx` - Remove member modal
+
+### Expenses Module (`features/expenses_module_03.md`)
+- [x] `lib/splitCalculator.ts` - Shared split calculation utilities with consistent rounding.
+- [x] `types/expenses.ts` - Shared expense module types, schema, and USD conversion constant.
+- [x] `app/api/groups/[groupId]/expenses/route.ts` - Expense listing filters and creation flow.
+- [x] `app/api/groups/[groupId]/expenses/[expenseId]/route.ts` - Single expense read, update, and delete flow.
+- [x] `app/(dashboard)/groups/[groupId]/expenses/page.tsx` - Server-rendered expenses page.
+- [x] `components/expenses/ExpensesPageClient.tsx` - Filters, refresh handling, and modal orchestration.
+- [x] `components/expenses/ExpenseList.tsx` - Month-grouped expense rendering with subtotals.
+- [x] `components/expenses/ExpenseRow.tsx` - Expandable expense rows with split breakdowns.
+- [x] `components/expenses/ExpenseForm.tsx` - Create/edit form with date-aware member filtering and live previews.
+- [x] `components/expenses/AddExpenseModal.tsx` - Create flow wrapper.
+- [x] `components/expenses/EditExpenseModal.tsx` - Edit flow wrapper.
+- [x] `components/expenses/DeleteExpenseDialog.tsx` - Delete confirmation flow.
+- [x] `DECISIONS.md` - Fixed USD to INR conversion rule documented.
 
 ### Outstanding Tasks / Next Steps
-- Verify application flows on runtime (Login, Registration, Redirects).
-- Wait for upcoming modules (e.g., Groups, Expenses) to populate the main dashboard content.
+- Verify runtime flows in the browser for expenses create/edit/delete and filter states.
+- Build the remaining group sub-pages: balances, settlements, and CSV import.

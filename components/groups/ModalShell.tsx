@@ -8,16 +8,27 @@ type ModalShellProps = {
   onClose: () => void;
   title: string;
   children: ReactNode;
+  panelClassName?: string;
+  bodyClassName?: string;
 };
 
-export function ModalShell({ isOpen, onClose, title, children }: ModalShellProps) {
+export function ModalShell({
+  isOpen,
+  onClose,
+  title,
+  children,
+  panelClassName = '',
+  bodyClassName = '',
+}: ModalShellProps) {
   if (!isOpen) {
     return null;
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
-      <div className="relative w-full max-w-md rounded-xl bg-gray-900 p-6 shadow-2xl">
+      <div
+        className={`relative w-full max-w-md rounded-xl bg-gray-900 p-6 shadow-2xl ${panelClassName}`}
+      >
         <button
           type="button"
           onClick={onClose}
@@ -27,7 +38,7 @@ export function ModalShell({ isOpen, onClose, title, children }: ModalShellProps
           <X className="h-5 w-5" />
         </button>
         <h2 className="pr-8 text-lg font-semibold text-white">{title}</h2>
-        <div className="mt-6">{children}</div>
+        <div className={`mt-6 ${bodyClassName}`}>{children}</div>
       </div>
     </div>
   );
