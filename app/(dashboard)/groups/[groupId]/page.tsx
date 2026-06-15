@@ -38,7 +38,10 @@ export default async function GroupDetailPage({ params }: GroupDetailPageProps) 
     notFound();
   }
 
-  const isMember = group.memberships.some((membership) => membership.user.id === session.user.id);
+  const isMember = group.memberships.some(
+    (membership: { user: { id: string } }) =>
+      membership.user.id === session.user.id
+  );
 
   if (!isMember) {
     forbidden();
